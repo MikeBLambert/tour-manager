@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - "10"
+services:
+  - "mongoDB"
+env:
+  - MONGODB_URI=mongodb://localhost:27017/music-db
