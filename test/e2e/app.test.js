@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../lib/app');
-const { dropCollection } = require('./db')
+const { dropCollection } = require('./db');
 
 describe('tours', () => {
 
@@ -63,6 +63,14 @@ describe('tours', () => {
                 createdTours.forEach(createdTour => {
                     expect(retrievedTours.body).toContainEqual(createdTour);
                 });
+            });
+    });
+
+    it('retrieves a specific tour on get request with an id', () => {
+        return request(app)
+            .get(`/api/tours/${createdTours[1]._id}`)
+            .then(res => {
+                expect(res.body).toEqual(createdTours[1]);
             });
     });
 
