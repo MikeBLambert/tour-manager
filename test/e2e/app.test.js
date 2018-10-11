@@ -74,6 +74,14 @@ describe('tours', () => {
             });
     });
 
+    it('deletes a tour when passed an id', () => {
+        return request(app)
+            .delete(`/api/tours/${createdTours[1]._id}`)
+            .then(res => {
+                expect(res.body).toEqual({ removed: true });
+            })
+    })
+
     
 });
 
