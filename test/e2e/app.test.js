@@ -42,7 +42,7 @@ describe('tours', () => {
             .send({ 
                 title: 'Big Top Extravaganza!',
                 activities: ['fire dancing', 'tight-rope walking', 'elephant taming'],
-                launchDate: new Date('2018-10-11T18:37:49.647Z')
+                launchDate: '2018-10-11T18:37:49.647Z'
             })
             .then(res => {
                 expect(res.body).toEqual({
@@ -50,7 +50,7 @@ describe('tours', () => {
                     _id: expect.any(String), 
                     title: 'Big Top Extravaganza!',
                     activities: ['fire dancing', 'tight-rope walking', 'elephant taming'],
-                    launchDate: new Date('2018-10-11T18:37:49.647Z').toISOString(),
+                    launchDate: '2018-10-11T18:37:49.647Z',
                     stops: []
                 });
             });
@@ -79,8 +79,17 @@ describe('tours', () => {
             .delete(`/api/tours/${createdTours[1]._id}`)
             .then(res => {
                 expect(res.body).toEqual({ removed: true });
-            })
-    })
+            });
+    });
+
+    it('posts a new stop to a tour', () => {
+        return request(app)
+            .post(`/api/tours/${createdTours[1]._id}/stops`)
+            .send({ zip: 97209 })
+            .then(res => {
+                expect(res.body).toEqual('DSSDSDF')
+            });
+    });
 
     
 });
