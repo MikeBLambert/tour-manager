@@ -58,25 +58,3 @@ Check that it augments the `request.body` with the required inforation.
 * Stop Testing and API **5pts**
 
 
-
-
-post /
-post /:id/stops ---will have a zipCode in here in the req { zip: 97209 } (pushes a stop to a tour)...will have middleware applied to it.  
-
-app.post(/api/tours/stops.... getLocation(req, res)
-const locationResult = req.locationResult
-
-need getLocation middleware
-
-const zipCode
-get  /
-get /:id
-get /:id/stops
-
-
-When pushing to the tours model. When giving an object with 
-{
-    $push: {
-        stops. actualStop
-    }
-}
