@@ -26,6 +26,13 @@ describe('tours', () => {
             .then(res => res.body);
     };
 
+    const createStop = tour => {
+        return request(app)
+            .post(`/api/tours/${tour._id}/stops`)
+            .send({ zip: 97034 })
+            .then(res => res.body);
+    };
+
     beforeEach(() => {
         return dropCollection('tours');
     });
@@ -35,6 +42,13 @@ describe('tours', () => {
             createdTours = toursRes;
         });
     });
+
+    beforeEach(() => {
+        return Promise.all(createdTours.map(createStop)).then(stopsRes => {
+            createdTours = stopsRes;
+        });
+    });
+
 
     it('creates a tour on post', () => {
         return request(app)
@@ -82,15 +96,37 @@ describe('tours', () => {
             });
     });
 
-    it('posts a new stop to a tour', () => {
+    it('deletes a stop when passed a tourId and stopId', () => {
+        const tourId = createdTours[1]._id;
+        const stopId = createdTours[1].stops[0]._id; 
         return request(app)
-            .post(`/api/tours/${createdTours[1]._id}/stops`)
-            .send({ zip: 97209 })
-            .then(res => {
-                expect(res.body).toEqual('DSSDSDF')
+            .delete(`/api/tours/${tourId}/stops/${stopId}`)
+            .then(newTour => {
+                expect(newTour.body.stops).toEqual([]);
             });
     });
 
+    it('posts a new stop to a tour', () => {
+        return request(app)
+            .post(`/api/tours/${createdTours[1]._id}/stops`)
+            .send({ zip: '97209' })
+            .then(res => {
+                expect(res.body.stops[1].location.city).toEqual('Portland');
+                expect(res.body.stops[1].weather.temperature).toEqual(expect.any(String));
+
+            });
+    });
+
+    it('updates attendance of a stop on a tour', () => {
+        const tourId = createdTours[1]._id;
+        const stopId = createdTours[1].stops[0]._id; 
+        return request(app)
+            .post(`/api/tours/${tourId}/stops/${stopId}/attendance`)
+            .send({ attendance: 75 })
+            .then(res => {
+                expect(res.body.stops[0].attendance).toEqual(75);
+            });
+    });
     
 });
 
