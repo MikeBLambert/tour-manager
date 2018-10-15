@@ -127,6 +127,17 @@ describe('tours', () => {
                 expect(res.body.stops[0].attendance).toEqual(75);
             });
     });
+
+    it('sends an error if provided incorrect tour id', () => {
+        const tourId = 123456789012345678901234;
+        const stopId = 123456789012345678901234; 
+        return request(app)
+            .post(`/api/tours/${tourId}/stops/${stopId}/attendance`)
+            .send({ attendance: 75 })
+            .then(res => {
+                expect(res.status).toEqual(500);
+            });
+    });
     
 });
 
