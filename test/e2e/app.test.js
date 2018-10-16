@@ -135,7 +135,7 @@ describe('tours', () => {
             .post(`/api/tours/${tourId}/stops/${stopId}/attendance`)
             .send({ attendance: 75 })
             .then(res => {
-                expect(res.status).toEqual(500);
+                expect(res.status).toEqual(400);
             });
     });
     

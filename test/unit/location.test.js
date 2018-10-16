@@ -22,5 +22,23 @@ describe('weather service middleware', () => {
         getLocation()(req, null, next);
         
     });
+
+    it('returns an error if passed a bogus zipcode', done => {
+        const req = { body: { zip: 9720 } };
+        let error = {};
+        const api = () => {
+            return Promise.reject(error);
+        };
+
+        const middleware = getLocation(api);
+
+        const next = err => {
+            expect(err).toEqual(error);
+            done();
+        };
+
+        middleware(req, null, next);
+
+    });
 });
 
