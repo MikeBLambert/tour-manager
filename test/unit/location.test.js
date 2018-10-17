@@ -38,7 +38,6 @@ describe('weather service middleware', () => {
         };
 
         middleware(req, null, next);
-
     });
 });
 
